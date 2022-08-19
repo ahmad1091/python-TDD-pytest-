@@ -35,3 +35,21 @@ class Article(BaseModel):
         con.close()
 
         return article
+
+    @classmethod
+    def get_by_title(cls, title: str):
+        con = sqlite3.connect(os.getenv("DATABASE_NAME", "database.db"))
+        con.row_factory = sqlite3.Row
+
+        cur = con.cursor()
+        cur.execute("SELECT * FROM articles WHERE title = ?", (title,))
+
+        record = cur.fetchone()
+
+        if record is None:
+            raise NotFound
+
+        article = cls(**record)  # Row can be unpacked as dict
+        con.close()
+
+        return article
