@@ -53,3 +53,16 @@ class Article(BaseModel):
         con.close()
 
         return article
+    @classmethod
+    def list(cls) -> List["Article"]:
+        con = sqlite3.connect(os.getenv("DATABASE_NAME", "database.db"))
+        con.row_factory = sqlite3.Row
+
+        cur = con.cursor()
+        cur.execute("SELECT * FROM articles")
+
+        records = cur.fetchall()
+        articles = [cls(**record) for record in records]
+        con.close()
+
+        return articles
