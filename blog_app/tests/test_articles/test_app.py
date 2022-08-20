@@ -32,4 +32,23 @@ def validate_payload(payload, schema_name):
         )
     )
 
+def test_create_article(client):
+    """
+    GIVEN request data for new article
+    WHEN endpoint /create-article/ is called
+    THEN it should return Article in json format that matches the schema
+    """
+    data = {
+        'author': "john@doe.com",
+        "title": "New Article",
+        "content": "Some extra awesome content"
+    }
+    response = client.post(
+        "/create-article/",
+        data=json.dumps(
+            data
+        ),
+        content_type="application/json",
+    )
 
+    validate_payload(response.json, "Article.json")
