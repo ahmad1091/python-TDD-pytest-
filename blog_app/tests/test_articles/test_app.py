@@ -70,3 +70,22 @@ def test_get_article(client):
     )
 
     validate_payload(response.json, "Article.json")
+
+
+def test_list_articles(client):
+    """
+    GIVEN articles stored in the database
+    WHEN endpoint /article-list/ is called
+    THEN it should return list of Article in json format that matches the schema
+    """
+    Article(
+        author="jane@doe.com",
+        title="New Article",
+        content="Super extra awesome article"
+    ).save()
+    response = client.get(
+        "/article-list/",
+        content_type="application/json",
+    )
+
+    validate_payload(response.json, "ArticleList.json")
