@@ -18,3 +18,14 @@ def get_article(article_id):
         id=article_id
     )
     return jsonify(query.execute().dict())
+
+
+@app.route("/article-list/", methods=["GET"])
+def list_articles():
+    query = ListArticlesQuery()
+    records = [record.dict() for record in query.execute()]
+    return jsonify(records)
+
+
+if __name__ == "__main__":
+    app.run()
