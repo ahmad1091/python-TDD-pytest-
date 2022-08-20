@@ -11,3 +11,10 @@ def create_article():
         **request.json
     )
     return jsonify(cmd.execute().dict())
+
+@app.route("/article/<article_id>/", methods=["GET"])
+def get_article(article_id):
+    query = GetArticleByIDQuery(
+        id=article_id
+    )
+    return jsonify(query.execute().dict())
